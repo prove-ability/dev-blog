@@ -1,0 +1,1 @@
+{"requirements":[{"id":"blog","dependsOn":[]},{"id":"review","dependsOn":["blog"]},{"id":"repository","dependsOn":[]},{"id":"comments","dependsOn":["repository"]},{"id":"release","dependsOn":["blog","review","repository"]}]}

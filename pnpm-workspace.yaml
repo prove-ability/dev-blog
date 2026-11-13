@@ -1,0 +1,6 @@
+storeDir: .runtime/pnpm-store
+nodeLinker: hoisted
+packageImportMethod: copy
+allowBuilds:
+  esbuild: true
+  sharp: true

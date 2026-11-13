@@ -1,7 +1,8 @@
 // Public Giscus identifiers. These are not API keys.
 export const site = {
   title: '개발의 기록',
-  description: '제가 AI와 함께 개발하며 겪은 시행착오를 AI로 정리하고, 직접 검토해 발행하는 AI Native 개발 경험 블로그입니다.',
+  description: '백엔드·풀스택 개발 과정의 문제, 설계 판단, 구현과 검증 결과를 기록합니다. AI를 활용한 개발과 작성 과정을 함께 공개합니다.',
+  github: 'https://github.com/prove-ability',
   repository: 'https://github.com/prove-ability/dev-blog',
 };
 export const comments = {

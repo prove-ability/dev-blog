@@ -1,0 +1,10 @@
+---
+import {getCollection, render} from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Comments from '../../components/Comments.astro';
+import {isPublished} from '../../lib/publication.mjs';
+export async function getStaticPaths(){return (await getCollection('posts',({data})=>isPublished(data))).map(post=>({params:{id:post.data.postId},props:{post}}));}
+const {post} = Astro.props;
+const {Content} = await render(post);
+---
+<Base title={post.data.title} description={post.data.description}><article><p class="eyebrow">DEVELOPMENT LOG</p><h1>{post.data.title}</h1><p class="meta">{post.data.date.toISOString().slice(0,10)} · {post.data.tags.join(' / ')}</p><p class="intro">{post.data.description}</p><Content/><Comments postId={post.data.postId}/></article></Base>

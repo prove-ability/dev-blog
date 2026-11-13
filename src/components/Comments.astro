@@ -1,0 +1,12 @@
+---
+import { commentKey } from '../lib/publication.mjs';
+import { comments } from '../config';
+const {postId} = Astro.props;
+const repo = import.meta.env.PUBLIC_GISCUS_REPO || comments.repo;
+const repoId = import.meta.env.PUBLIC_GISCUS_REPO_ID || comments.repoId;
+const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID || comments.categoryId;
+---
+<section aria-label="댓글" class="comments">
+  <h2>이 경험에 대해 이야기 나눠요</h2>
+  {repo && repoId && categoryId ? <script is:inline src="https://giscus.app/client.js" data-repo={repo} data-repo-id={repoId} data-category-id={categoryId} data-mapping="specific" data-term={commentKey(postId)} data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="ko" data-loading="lazy" crossorigin="anonymous" async></script> : <p>댓글 기능은 GitHub 연결을 마친 후 열립니다.</p>}
+</section>

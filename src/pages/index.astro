@@ -1,0 +1,7 @@
+---
+import Base from '../layouts/Base.astro';
+import {getCollection} from 'astro:content';
+import {isPublished} from '../lib/publication.mjs';
+const posts = (await getCollection('posts', ({data})=>isPublished(data))).sort((a,b)=>b.data.date.valueOf()-a.data.date.valueOf());
+---
+<Base><p class="eyebrow">PERSONAL ENGINEERING JOURNAL</p><h1>만들면서 배우고,<br/>경험으로 남깁니다.</h1><p class="intro">문제를 만난 순간부터 해결을 확인하기까지.<br/>코드 뒤에 있는 고민과 선택을 기록하는 공간입니다.</p><div class="cards">{posts.length ? posts.map(post=><a class="card" href={`${import.meta.env.BASE_URL}posts/${post.data.postId}/`}><span class="meta">{post.data.date.toISOString().slice(0,10)}</span><h2>{post.data.title}</h2><p>{post.data.description}</p><div class="tags">{post.data.tags.map(tag=><span class="tag">#{tag}</span>)}</div></a>) : <p class="empty">첫 번째 개발 기록을 준비하고 있습니다.</p>}</div></Base>

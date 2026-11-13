@@ -25,7 +25,7 @@ try{
  assert.ok(article.includes('본인 역할과 기여') && article.includes('Fixture human contribution'));
  assert.ok(article.includes('AI 활용 범위') && article.includes('https://example.com/evidence'));
  assert.ok(readFileSync('dist/projects/index.html','utf8').includes('/posts/verification-fixture/'));
- assert.ok(readFileSync('dist/index.html','utf8').includes('대표 프로젝트'));
+ assert.ok(!readFileSync('dist/index.html','utf8').includes('대표 프로젝트'));
  assert.ok(readFileSync('dist/rss.xml','utf8').includes('Verification fixture &amp; notes'));
  assert.ok(readFileSync('dist/sitemap.xml','utf8').includes('/posts/verification-fixture/'));
  assertExcluded('verification-future');
@@ -36,8 +36,7 @@ assert.ok(!existsSync('dist/posts/verification-fixture/index.html'),'Test fixtur
 assertExcluded('verification-fixture');assertExcluded('verification-future');
 const home=readFileSync('dist/index.html','utf8');
 assert.ok(home.includes('<title>개발의 기록</title>'),'Homepage title duplicated');
-assert.ok(home.includes('AI가 초안을 정리하고'));
-assert.ok(home.includes('백엔드·풀스택 개발 과정'));
+assert.ok(home.includes('AI로 정리하고'));
 assert.ok(!home.includes('대표 프로젝트'),'Empty homepage shows fake featured projects');
 assert.ok(readFileSync('dist/about/index.html','utf8').includes('직접 하지 않은 일을 경험한 것처럼'));
 assert.ok(readFileSync('dist/404.html','utf8').includes('noindex, nofollow'));

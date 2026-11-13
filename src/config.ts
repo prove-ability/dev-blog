@@ -1,7 +1,7 @@
 // Public Giscus identifiers. These are not API keys.
 export const site = {
   title: '개발의 기록',
-  description: '백엔드·풀스택 개발 과정의 문제, 설계 판단, 구현과 검증 결과를 기록합니다. AI를 활용한 개발과 작성 과정을 함께 공개합니다.',
+  description: '개발하면서 마주친 문제와 해결 과정, 새로 배운 내용을 기록하는 개인 개발 블로그입니다.',
   github: 'https://github.com/prove-ability',
   repository: 'https://github.com/prove-ability/dev-blog',
 };

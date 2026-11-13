@@ -1,30 +1,60 @@
-# 개발의 기록
+# 개발의 기록 — AI Native Development Journal
 
-Personal Astro blog. Start with `pnpm install`, `pnpm dev`; validate with `pnpm verify`.
+제가 AI와 함께 개발하며 겪은 시행착오를 AI로 정리하고, 직접 검토해 발행하는 개인 개발 경험 블로그입니다.
 
-## Review process
+아이디어 정리부터 설계·구현·디버깅·검증까지 AI와 함께 작업합니다. 개발 과정의 기록과 검증 결과를 바탕으로 AI가 콘텐츠 초안을 정리하고, 작성자인 제가 사실관계와 공개 범위를 확인한 뒤 발행합니다.
 
-1. A development chat produces evidence-based Markdown plus local images.
-2. Create an article branch and PR, keeping status: draft while editing. The PR is the review inbox.
-3. Read the Markdown in GitHub's rendered view, or run `pnpm dev` after temporarily switching a local copy to published for visual review. Never commit that switch before approval. Public preview deployments are not configured.
-4. Leave review comments or request revisions in the PR. Incorporate comments; rerun checks.
-5. After explicit user approval, change status to published and verify again. The user merges the PR, or explicitly asks the agent to merge.
-6. Merge to main triggers the deploy workflow. GitHub Pages must be enabled with Actions as its source before the first deployment. Domain: blog.ccoshong.top. The existing root domain service is preserved.
+- [블로그](https://blog.ccoshong.top/)
+- [소개와 작성 원칙](https://blog.ccoshong.top/about/)
+- [RSS](https://blog.ccoshong.top/rss.xml)
 
-IMPORTANT: This is a PUBLIC repository. Draft Markdown and PRs are publicly readable even though draft routes never appear on the blog. Do not put confidential drafts here. A confidential review process requires separate private storage.
+## 콘텐츠 작성 원칙
 
-GitHub PR checks provide validation, not an enforced approval boundary. Required checks, restricted main-branch writes and available branch-protection features must be configured and verified on the actual repository. A single-owner repository can require a manual merge because owners cannot approve their own PRs. Content cache is cleared before release builds so deleted posts cannot survive through stale collection data.
+- 직접 하지 않은 일을 경험한 것처럼 쓰지 않습니다.
+- 문제의 배경, 선택한 방법, 실패한 시도, 검증 결과와 한계를 함께 기록합니다.
+- AI의 제안·추측과 실제로 확인한 사실을 구분합니다.
+- 확인하지 않은 성과·수치·테스트 결과를 만들지 않습니다.
+- 비밀값·개인정보·공개하지 않은 프로젝트 정보는 원고와 이미지에 넣지 않습니다.
+- AI가 정리한 글은 작성자가 검토한 뒤 발행합니다.
 
-## Comments
+## 초안 검토와 발행
 
-Giscus is installed for prove-ability/dev-blog only. Discussions is enabled; the Announcements category is configured using public IDs in src/config.ts. Environment variables can override them when migrating. Visitors sign in with GitHub to comment; discussions are public. API tokens are not needed in client code.
+1. 개발 채팅의 작업 자료를 모아 Markdown과 로컬 이미지로 정리합니다.
+2. 글별 브랜치와 PR을 만들고 `status: draft`를 유지합니다.
+3. PR의 Markdown 렌더링으로 원고를 검토합니다. 공개 사이트에는 승인한 글만 포함됩니다. 별도 웹 초안 미리보기는 제공하지 않습니다.
+4. PR 댓글로 수정 의견을 남기고 반영한 다음 `pnpm verify`를 실행합니다.
+5. 작성자의 명시적 발행 승인 이후에만 `status: published`로 바꿉니다.
+6. 작성자가 PR을 병합하거나, 명시적으로 병합을 요청합니다.
+7. main 변경 후 GitHub Actions가 검사·빌드·배포합니다. 실제 사이트를 확인해야 발행 완료입니다.
 
-`postId` is permanent and used for specific-term mapping with strict matching. A title/URL change must retain it. Do not load comments on private drafts. No end-to-end comment verification has occurred yet.
+**이 저장소는 공개입니다. 미발행 원고와 PR도 누구나 읽을 수 있습니다.** `draft`는 블로그·RSS·사이트맵에서만 제외합니다. 기밀 초안은 별도 비공개 공간에서 검토해야 합니다.
 
-## Portability
+main은 PR, `check` 통과, 최신 main 반영, 검토 대화 해결을 요구하며 관리자에게도 적용합니다. 강제 푸시와 삭제는 허용하지 않습니다. 개인 소유자는 자신의 PR을 승인할 수 없어 별도 승인자 1명 요구는 사용하지 않습니다. 작성자의 병합 결정이 최종 발행 승인입니다. GitHub가 사람과 AI의 요청을 구별하는 구조는 아닙니다.
 
-Keep Markdown, original images, stable postIds and custom-domain paths. Prefer standard Markdown over framework-specific MDX. Image files and comments need their own migration plan. Custom domain and hosting have not been configured.
+개발 서버는 기본적으로 127.0.0.1에만 바인딩됩니다. 미래 날짜 글은 다음 빌드 때 공개 여부를 다시 판단합니다. 예약 실행은 별도 설정하지 않았습니다.
 
-## Decisions
+## 시작하기
 
-Astro static output, Korean personal engineering journal, native Markdown, PR review, Giscus with stable IDs. Blog title is provisional. No sample article is published. On Windows, Astro 6 is pinned for compatibility with the managed development environment.
+Node.js 24와 pnpm 11을 사용합니다.
+
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
+pnpm verify
+```
+
+글은 `src/content/posts/`에 둡니다. `postId`는 URL·댓글·RSS의 영구 식별자이므로 발행 후 바꾸지 않습니다. 이미지는 `public/images/`에 원본과 함께 보관합니다. 글의 필수 필드는 title, description, postId, date, status, tags입니다. status 기본값은 draft입니다.
+
+홈·글·RSS·사이트맵은 같은 공개 여부 필터를 사용합니다. 배포 빌드 전 콘텐츠 캐시를 비워 삭제한 마지막 글이 캐시에 남는 것을 방지합니다. 테스트는 초안·미래 날짜 글의 공개 제외, RSS XML 이스케이프, 본문과 댓글 ID, 삭제 글 제거를 검사합니다.
+
+## 댓글과 운영
+
+- Astro 정적 사이트 / GitHub Pages 호스팅 / Cloudflare DNS
+- 주소: https://blog.ccoshong.top/
+- Giscus를 `prove-ability/dev-blog` 하나에 설치하고 Discussions의 Announcements 카테고리를 연결했습니다.
+- 댓글은 GitHub 로그인으로 작성하며 공개 Discussions에 저장됩니다.
+- 공개 ID는 `src/config.ts`에 있고 API 키가 아닙니다. 댓글은 영구 postId에 연결됩니다.
+- 한국어 기본 화면, 시스템 밝기 테마, 키보드 포커스, 404 안내, 공유용 메타데이터, RSS·사이트맵을 제공합니다.
+- 원고·이미지·코드를 함께 보관합니다. 플랫폼 이전 시 개인 도메인의 경로와 postId를 유지하고 이미지·댓글도 별도로 확인합니다.
+
+이 저장소의 소개·기능 변경과 실제 경험 글 발행은 별개입니다. 기능 개선 요청이 새 글의 발행 승인까지 의미하지는 않습니다.

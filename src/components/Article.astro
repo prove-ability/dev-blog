@@ -1,0 +1,18 @@
+---
+import {render, type CollectionEntry} from 'astro:content';
+import Comments from './Comments.astro';
+interface Props {post: CollectionEntry<'posts'>;}
+const {post} = Astro.props;
+const {Content} = await render(post);
+const base = import.meta.env.BASE_URL;
+---
+<article>
+  <a class="back-link" href={base}>← 개발 기록으로 돌아가기</a>
+  <p class="eyebrow">AI NATIVE DEVELOPMENT LOG</p>
+  <h1>{post.data.title}</h1>
+  <p class="meta"><time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().slice(0,10)}</time>{post.data.tags.length > 0 && ` · ${post.data.tags.join(' / ')}`}</p>
+  <p class="intro">{post.data.description}</p>
+  <Content/>
+  <aside class="writing-note">이 블로그는 직접 겪은 개발 경험을 AI로 정리하고, 작성자가 검토해 발행합니다. <a href={`${base}about/`}>작성 원칙 보기</a></aside>
+  <Comments postId={post.data.postId}/>
+</article>

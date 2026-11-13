@@ -12,8 +12,9 @@ const base = import.meta.env.BASE_URL;
   <h1>{post.data.title}</h1>
   <p class="meta"><time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().slice(0,10)}</time>{post.data.tags.length > 0 && ` · ${post.data.tags.join(' / ')}`}</p>
   <p class="intro">{post.data.description}</p>
+  <aside class="writing-note" aria-label="AI 활용 안내">이 글은 실제 개발 과정과 작업 기록을 바탕으로 AI의 도움을 받아 정리했으며, 작성자가 검토했습니다.</aside>
   {post.data.evidence && <section class="evidence" aria-label="프로젝트 핵심 근거"><h2>프로젝트 한눈에 보기</h2><dl><dt>해결하려던 문제</dt><dd>{post.data.evidence.problem}</dd><dt>본인 역할과 기여</dt><dd>{post.data.evidence.ownership}</dd><dt>핵심 설계와 선택</dt><dd>{post.data.evidence.decisions}</dd><dt>검증 결과</dt><dd>{post.data.evidence.validation}</dd><dt>한계와 다음 개선</dt><dd>{post.data.evidence.limitations}</dd><dt>AI 활용 범위</dt><dd>{post.data.evidence.aiUse}</dd></dl><ul class="evidence-links">{post.data.evidence.links.map(link=><li><a href={link.url}>{link.label} ↗</a></li>)}</ul></section>}
   <Content/>
-  <aside class="writing-note">이 블로그는 직접 겪은 개발 경험을 AI로 정리하고, 작성자가 검토해 발행합니다. <a href={`${base}about/`}>작성 원칙 보기</a></aside>
+  <p class="meta"><a href={`${base}about/`}>이 블로그의 작성 원칙</a></p>
   <Comments postId={post.data.postId}/>
 </article>

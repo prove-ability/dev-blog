@@ -1,17 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
 import {getPublishedPosts} from '../lib/posts';
+import {site} from '../config';
 const posts = await getPublishedPosts();
+const featured = posts.filter(post=>post.data.kind==='project' && post.data.featured).slice(0,3);
 const base = import.meta.env.BASE_URL;
 ---
 <Base>
-  <p class="eyebrow">AI NATIVE DEVELOPMENT JOURNAL</p>
-  <h1>AI와 함께 만들고,<br/>경험을 기록합니다.</h1>
-  <p class="intro">제가 AI와 함께 설계하고 개발하며 겪은 시행착오를 기록합니다. 실제 작업과 검증 결과를 바탕으로 AI가 초안을 정리하고, 제가 검토해 발행합니다.</p>
-  <ol class="process" aria-label="콘텐츠 작성 과정"><li>01 직접 개발하고 경험</li><li>02 AI로 초안 정리</li><li>03 내가 검토하고 발행</li></ol>
-  <a class="text-link" href={`${base}about/`}>어떻게 개발하고 기록하는지 →</a>
+  <p class="eyebrow">BACKEND & FULLSTACK · ENGINEERING JOURNAL</p>
+  <h1>문제에서 출발해,<br/>검증까지 기록합니다.</h1>
+  <p class="intro">백엔드·풀스택 개발 과정에서 마주한 문제와 설계 선택, 구현 결과를 기록합니다. 각 프로젝트에서 제가 맡은 역할과 판단, 코드와 검증 근거를 함께 정리합니다.</p>
+  <div class="hero-links"><a class="primary-link" href={`${base}projects/`}>프로젝트 보기 →</a><a class="text-link" href={site.github}>GitHub 프로필 ↗</a><a class="text-link" href={`${base}about/`}>소개와 작성 원칙</a></div>
+  <aside class="writing-note">AI와 함께 개발한 경험을 바탕으로 AI가 초안을 정리하고, 제가 사실관계와 공개 범위를 검토해 발행합니다.</aside>
+  {featured.length > 0 && <section class="cards" aria-labelledby="featured-heading"><h2 class="section-heading" id="featured-heading">대표 프로젝트</h2>{featured.map(post=><a class="card" href={`${base}posts/${post.data.postId}/`}><h3>{post.data.title}</h3><p>{post.data.description}</p><p class="meta">본인 기여 · 설계 선택 · 검증 근거</p></a>)}</section>}
   <section class="cards" aria-labelledby="posts-heading">
     <h2 class="section-heading" id="posts-heading">개발 기록 <span class="meta">{posts.length}편</span></h2>
-    {posts.length ? posts.map(post=><a class="card" href={`${base}posts/${post.data.postId}/`}><time class="meta" datetime={post.data.date.toISOString()}>{post.data.date.toISOString().slice(0,10)}</time><h3>{post.data.title}</h3><p>{post.data.description}</p><div class="tags">{post.data.tags.map(tag=><span class="tag">#{tag}</span>)}</div></a>) : <div class="empty"><p>첫 번째 AI Native 개발 기록을 준비하고 있습니다.</p><p>문제를 발견한 계기, AI와 함께한 해결 과정, 실제로 확인한 결과를 차근차근 남길 예정입니다.</p></div>}
+    {posts.length ? posts.map(post=><a class="card" href={`${base}posts/${post.data.postId}/`}><time class="meta" datetime={post.data.date.toISOString()}>{post.data.date.toISOString().slice(0,10)}</time><h3>{post.data.title}</h3><p>{post.data.description}</p><div class="tags">{post.data.tags.map(tag=><span class="tag">#{tag}</span>)}</div></a>) : <div class="empty"><p>공개 검토를 마친 개발 기록을 준비하고 있습니다.</p><p>문제의 배경부터 본인 기여, 설계와 검증 결과까지 확인할 수 있도록 정리할 예정입니다.</p></div>}
   </section>
 </Base>

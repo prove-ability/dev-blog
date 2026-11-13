@@ -3,7 +3,7 @@ title: '인스타그램 콘텐츠 자동화, 생성보다 승인 흐름이 중�
 description: '유스핀랩 경제 교육 콘텐츠를 Make·AI·검토 스튜디오·Buffer·Slack으로 연결하며 배운 것들을 정리했다.'
 postId: instagram-content-automation
 date: 2026-11-13
-status: draft
+status: published
 tags: [자동화, AI, Make, 운영]
 kind: note
 ---

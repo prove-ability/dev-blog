@@ -1,0 +1,19 @@
+flowchart TD
+  A[Make 정기 실행<br/>월·수·금 오전 9시] --> B[서버에서 제작 계획 조회]
+  B --> C{이미 처리한 계획인가?}
+  C -->|예| D[생성 생략 · AI 호출 없음]
+  C -->|아니오| E[AI 원고 생성<br/>독자: 학부모·교사]
+  E --> F[원고 먼저 저장]
+  F --> G[고정 새싹·템플릿<br/>카드 PNG 4장 제작]
+  G --> H[검토 대기 · Slack 알림]
+  H --> I{사람의 검토}
+  I -->|수정·반려| J[피드백 기록 · 수정]
+  J --> H
+  I -->|승인| K[Buffer 예약 요청]
+  K --> L[예약 결과 확인]
+  G -. 렌더링 실패 .-> M[원고 보존 · 이미지 재시도]
+  M --> G
+  classDef human fill:#fff1cf,stroke:#b58522,color:#40300a
+  classDef store fill:#ddf4e9,stroke:#25775b,color:#173e30
+  class I,J human
+  class F,G,H store

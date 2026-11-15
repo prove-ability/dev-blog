@@ -6,6 +6,7 @@ const requirements=new Map(state.requirements.map(r=>[r.id,r]));
 function visit(id,stack=[]){assert.ok(requirements.has(id),`Unknown dependency ${id}`);assert.ok(!stack.includes(id),'Dependency cycle');for(const dependency of requirements.get(id).dependsOn)visit(dependency,[...stack,id]);}
 for(const id of requirements.keys())visit(id);
 const ids=new Set();
+const seriesOrders=new Set();
 function walk(dir){return readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(join(dir,e.name)):[join(dir,e.name)]);}
-for(const file of walk('src/content/posts').filter(f=>f.endsWith('.md'))){const text=readFileSync(file,'utf8');const id=text.match(/^postId:\s*([a-z0-9-]+)\s*$/m)?.[1];assert.ok(id,`Missing stable postId: ${file}`);assert.ok(!ids.has(id),`Duplicate postId: ${id}`);ids.add(id);}
+for(const file of walk('src/content/posts').filter(f=>f.endsWith('.md'))){const text=readFileSync(file,'utf8');const id=text.match(/^postId:\s*([a-z0-9-]+)\s*$/m)?.[1];assert.ok(id,`Missing stable postId: ${file}`);assert.ok(!ids.has(id),`Duplicate postId: ${id}`);ids.add(id);const series=text.match(/^series:\s*\r?\n\s+id:\s*(\S+)\s*\r?\n\s+order:\s*(\d+)/m);if(series){const key=`${series[1]}:${series[2]}`;assert.ok(!seriesOrders.has(key),`Duplicate series order: ${key}`);seriesOrders.add(key);}}
 console.log(`Preflight: ${requirements.size} requirements; ${ids.size} unique post IDs.`);

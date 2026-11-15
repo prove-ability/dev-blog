@@ -1,0 +1,15 @@
+---
+import type {CollectionEntry} from 'astro:content';
+import {getPublishedPosts} from '../lib/posts';
+import {seriesCatalog,getSeriesPosts} from '../lib/series';
+interface Props {post: CollectionEntry<'posts'>;}
+const {post} = Astro.props;
+const series = post.data.series;
+const entries = series ? getSeriesPosts(await getPublishedPosts(),series.id) : [];
+const base = import.meta.env.BASE_URL;
+---
+{series && <aside class="series-nav" aria-label="이 글의 시리즈">
+  <p><a href={`${base}series/${series.id}/`}>{seriesCatalog[series.id].title}</a> · {series.order}편</p>
+  <ol>{entries.map(entry=><li value={entry.data.series!.order}><a href={`${base}posts/${entry.data.postId}/`} aria-current={entry.data.postId===post.data.postId?'page':undefined}>{entry.data.title}</a></li>)}</ol>
+</aside>}
+<style>.series-nav{padding:16px 20px;border:1px solid var(--line);border-radius:8px;margin:28px 0;font-size:14px}.series-nav p{margin:0;font-weight:700}.series-nav ol{padding-left:24px;margin-bottom:0}.series-nav a[aria-current=page]{color:var(--accent);font-weight:700}</style>

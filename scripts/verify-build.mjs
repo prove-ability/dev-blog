@@ -8,17 +8,22 @@ function build(testComments=false){const env={...process.env,ASTRO_TELEMETRY_DIS
 const fixture=(status)=>`---\ntitle: Verification fixture & notes\ndescription: Temporary build test\npostId: verification-fixture\ndate: 2020-01-01\nstatus: ${status}\ntags: []\n---\n\nFixture article body.\n`;
 function assertExcluded(id){
  assert.ok(!existsSync(`dist/posts/${id}/index.html`),'Unpublished route exposed');
- for(const file of ['dist/index.html','dist/projects/index.html','dist/rss.xml','dist/sitemap.xml'])assert.ok(!readFileSync(file,'utf8').includes(id),`Unpublished article leaked into ${file}`);
+ for(const file of ['dist/index.html','dist/projects/index.html','dist/rss.xml','dist/sitemap.xml','dist/series/youthfinlab-branding/index.html'])assert.ok(!readFileSync(file,'utf8').includes(id),`Unpublished article leaked into ${file}`);
  assert.ok(!existsSync(`dist/preview/${id}/index.html`),'Local preview exposed in production');
 }
 try{
- writeFileSync(futurePath,fixture('published').replace('verification-fixture','verification-future').replace('2020-01-01','2099-01-01'));
- writeFileSync(path,fixture('draft').replace('tags: []','tags: []\nkind: project'));build();
+ writeFileSync(futurePath,fixture('published').replace('verification-fixture','verification-future').replace('2020-01-01','2099-01-01').replace('tags: []','tags: []\nseries:\n  id: youthfinlab-branding\n  order: 99'));
+ writeFileSync(path,fixture('draft').replace('tags: []','tags: []\nkind: project\nseries:\n  id: youthfinlab-branding\n  order: 98'));build();
  assertExcluded('verification-fixture');assertExcluded('verification-future');
  assert.ok(!readFileSync('dist/index.html','utf8').includes('Verification fixture'),'Draft listed');
- writeFileSync(path,fixture('published').replace('tags: []','tags: []\nkind: project\nfeatured: true\nevidence:\n  problem: Fixture problem\n  ownership: Fixture human contribution\n  decisions: Fixture design decision\n  validation: Fixture verified result\n  limitations: Fixture limitation\n  aiUse: Fixture AI scope\n  links:\n    - label: Fixture source\n      url: https://example.com/evidence'));build(true);
+ writeFileSync(path,fixture('published').replace('tags: []','tags: []\nkind: project\nseries:\n  id: youthfinlab-branding\n  order: 98\nfeatured: true\nevidence:\n  problem: Fixture problem\n  ownership: Fixture human contribution\n  decisions: Fixture design decision\n  validation: Fixture verified result\n  limitations: Fixture limitation\n  aiUse: Fixture AI scope\n  links:\n    - label: Fixture source\n      url: https://example.com/evidence'));build(true);
  const article=readFileSync('dist/posts/verification-fixture/index.html','utf8');
  assert.ok(article.includes('Fixture article body.'));
+ assert.ok(article.includes('유스핀랩 브랜딩과 운영을 만들어가는 기록'));
+ const seriesHtml=readFileSync('dist/series/youthfinlab-branding/index.html','utf8');
+ assert.ok(seriesHtml.includes('/posts/verification-fixture/'));
+ assert.ok(seriesHtml.indexOf('/posts/instagram-content-automation/')<seriesHtml.indexOf('/posts/verification-fixture/'));
+ assert.equal((article.match(/이 글은 실제 개발 과정과 작업 기록을 바탕으로/g)||[]).length,1);
  assert.ok(article.includes('data-term="post:verification-fixture"'));
  assert.ok(article.includes('data-mapping="specific"'));
  assert.ok(article.includes('작성 원칙 보기'));

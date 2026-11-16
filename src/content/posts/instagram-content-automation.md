@@ -6,6 +6,9 @@ date: 2026-11-13
 status: published
 tags: [자동화, AI, Make, 운영]
 kind: note
+series:
+  id: youthfinlab-branding
+  order: 1
 ---
 
 유스핀랩 인스타그램에 경제 교육 콘텐츠를 꾸준히 올리고 싶었다. 그런데 게시물 하나에도 할 일이 꽤 있었다. 주제를 고르고 원고를 쓰고, 카드 이미지를 만든 다음 예약까지 해야 했다. 매번 내가 “이번 글 만들어줘”라고 요청하는 방식에서 벗어나고 싶었다.

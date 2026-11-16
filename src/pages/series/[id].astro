@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import {getPublishedPosts} from '../../lib/posts';
+import {seriesCatalog,getSeriesPosts,type SeriesId} from '../../lib/series';
+export async function getStaticPaths(){
+  const posts = await getPublishedPosts();
+  return (Object.keys(seriesCatalog) as SeriesId[]).flatMap(id=>{
+    const entries=getSeriesPosts(posts,id);
+    return entries.length ? [{params:{id},props:{series:seriesCatalog[id],entries}}] : [];
+  });
+}
+const {series,entries}=Astro.props;
+const base=import.meta.env.BASE_URL;
+---
+<Base title={series.title} description={series.description}>
+  <section class="prose"><a href={base}>← 개발 기록으로 돌아가기</a><h1>{series.title}</h1><p class="intro">{series.description}</p>
+    <ol>{entries.map(post=><li value={post.data.series!.order}><a href={`${base}posts/${post.data.postId}/`}>{post.data.title}</a><p>{post.data.description}</p></li>)}</ol>
+  </section>
+</Base>

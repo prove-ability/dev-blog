@@ -3,7 +3,7 @@ title: '인스타그램에서 보던 새싹을 홈페이지로 가져왔다'
 description: '인스타그램과 홈페이지의 브랜드를 맞추며 새싹을 넣었다. 시안을 확인한 뒤 기존 로고와 움직이는 첫 화면을 되살리고, 문의 버튼으로 캐릭터의 자리를 조정한 과정이다.'
 postId: homepage-brand-alignment
 date: 2026-11-15
-status: draft
+status: published
 tags: [브랜딩, 웹개발, Next.js, AI]
 kind: note
 series:

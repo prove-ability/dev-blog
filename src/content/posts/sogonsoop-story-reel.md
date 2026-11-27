@@ -25,6 +25,15 @@ series:
 
 여러 시안 가운데 J라는 이름을 붙인 목소리가 그 느낌에 가장 가까웠다. 샘플을 들어보고 기본 목소리로 골랐고, AI는 선택한 목소리로 열 장의 낭독을 만들었다. 낭독 설정에는 아이 옆에서 발견한 것을 가볍게 말해주는 느낌과 문장 사이의 짧은 쉼을 함께 남겼다.
 
+<figure style="margin-inline: 0">
+  <figcaption id="j-narration-title">목소리를 고를 때 들었던 J 낭독 샘플 · 약 7초</figcaption>
+  <audio controls loading="lazy" preload="none" aria-labelledby="j-narration-title" aria-details="j-narration-transcript" style="display: block; max-width: 100%">
+    <source src="/audio/sogonsoop-story-reel/j-narration-sample.mp3" type="audio/mpeg">
+  </audio>
+  <p><a href="/audio/sogonsoop-story-reel/j-narration-sample.mp3">J 낭독 샘플 MP3 열기</a></p>
+  <p id="j-narration-transcript">낭독 대사. “저녁이 되었어요. 모루는 집으로 가요. 달님아, 왜 따라와? 잘 자, 달님.”</p>
+</figure>
+
 ## 그림 열 장을 낭독에 맞춰 잇기
 
 달님 편의 그림과 문장은 이미 확정돼 있었다. 저녁 숲길에서 모루가 달을 발견하고, 나무다리에서 물에 비친 달을 본 뒤, 집에 돌아와 창가에서 달님에게 인사한다. AI가 이 흐름을 영상으로 편집하면서 승인된 그림을 원본 묶음과 대조하고, 각 장면에 그 문장의 낭독을 붙였다.

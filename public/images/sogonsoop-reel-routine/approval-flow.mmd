@@ -1,0 +1,18 @@
+flowchart TD
+  plan["첫날 · 장별 대본과 대표 시안"]
+  planGate{"기획 승인"}
+  revisePlan["기획 수정 또는 승인 대기"]
+  preview["둘째 날 · 본편 릴스와 스토리 미리보기"]
+  postGate{"게시 승인"}
+  revisePost["판본 수정 또는 승인 대기"]
+  reel["본편 릴스 게시 · 직접 링크 확인"]
+  story["스토리 2장 게시 · 링크 동작 확인"]
+  plan --> planGate
+  planGate -->|대기·수정| revisePlan
+  revisePlan --> planGate
+  planGate -->|승인| preview
+  preview --> postGate
+  postGate -->|대기·수정| revisePost
+  revisePost --> postGate
+  postGate -->|승인| reel
+  reel --> story

@@ -11,13 +11,27 @@ function assertExcluded(id){
  for(const file of ['dist/index.html','dist/projects/index.html','dist/rss.xml','dist/sitemap.xml','dist/series/youthfinlab-branding/index.html'])assert.ok(!readFileSync(file,'utf8').includes(id),`Unpublished article leaked into ${file}`);
  assert.ok(!existsSync(`dist/preview/${id}/index.html`),'Local preview exposed in production');
 }
+function assertNextEpisode(id, nextId) {
+ const article = readFileSync(`dist/posts/${id}/index.html`, 'utf8');
+ const nav = article.match(/<nav\b[^>]*aria-label="연재 이어 읽기"[^>]*>[\s\S]*?<\/nav>/);
+ if (!nextId) {
+  assert.equal(nav, null, `Unexpected next episode for ${id}`);
+  return;
+ }
+ assert.ok(nav?.[0].includes(`href="/posts/${nextId}/"`), `Wrong next episode for ${id}`);
+ assert.ok(nav[0].includes('rel="next"') && nav[0].includes('다음 편'), `Missing next-link semantics for ${id}`);
+ assert.ok(nav.index < article.indexOf('작성 원칙 보기'), `Next link follows article boilerplate for ${id}`);
+}
 try{
  writeFileSync(futurePath,fixture('published').replace('verification-fixture','verification-future').replace('2020-01-01','2099-01-01').replace('tags: []','tags: []\nseries:\n  id: youthfinlab-branding\n  order: 99'));
  writeFileSync(path,fixture('draft').replace('tags: []','tags: []\nkind: project\nseries:\n  id: youthfinlab-branding\n  order: 98'));build();
  assertExcluded('verification-fixture');assertExcluded('verification-future');
+ assertNextEpisode('blog-url-recovery');
  assert.ok(!readFileSync('dist/index.html','utf8').includes('Verification fixture'),'Draft listed');
  writeFileSync(path,fixture('published').replace('tags: []','tags: []\nkind: project\nseries:\n  id: youthfinlab-branding\n  order: 98\nfeatured: true\nevidence:\n  problem: Fixture problem\n  ownership: Fixture human contribution\n  decisions: Fixture design decision\n  validation: Fixture verified result\n  limitations: Fixture limitation\n  aiUse: Fixture AI scope\n  links:\n    - label: Fixture source\n      url: https://example.com/evidence'));build(true);
  const article=readFileSync('dist/posts/verification-fixture/index.html','utf8');
+ assertNextEpisode('blog-url-recovery', 'verification-fixture');
+ assertNextEpisode('verification-fixture');
  assert.ok(article.includes('Fixture article body.'));
  assert.ok(article.includes('유스핀랩 브랜딩과 운영을 만들어가는 기록'));
  const seriesHtml=readFileSync('dist/series/youthfinlab-branding/index.html','utf8');
@@ -39,6 +53,9 @@ try{
 }finally{rmSync(path,{force:true});rmSync(futurePath,{force:true});build();}
 assert.ok(!existsSync('dist/posts/verification-fixture/index.html'),'Test fixture remained in release');
 assertExcluded('verification-fixture');assertExcluded('verification-future');
+assertNextEpisode('sogonsoop-branding', 'sogonsoop-story-reel');
+assertNextEpisode('sogonsoop-story-reel', 'sogonsoop-reel-routine');
+assertNextEpisode('sogonsoop-reel-routine');
 const home=readFileSync('dist/index.html','utf8');
 assert.ok(home.includes('<title>개발의 기록</title>'),'Homepage title duplicated');
 assert.ok(home.includes('AI로 정리하고'));

@@ -1,11 +1,12 @@
 ---
 import type {CollectionEntry} from 'astro:content';
-import {getPublishedPosts} from '../lib/posts';
-import {seriesCatalog,getSeriesPosts} from '../lib/series';
-interface Props {post: CollectionEntry<'posts'>;}
-const {post} = Astro.props;
+import {seriesCatalog} from '../lib/series';
+interface Props {
+  post: CollectionEntry<'posts'>;
+  entries: CollectionEntry<'posts'>[];
+}
+const {post, entries} = Astro.props;
 const series = post.data.series;
-const entries = series ? getSeriesPosts(await getPublishedPosts(),series.id) : [];
 const base = import.meta.env.BASE_URL;
 ---
 {series && <aside class="series-nav" aria-label="이 글의 시리즈">
